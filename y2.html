@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yemek Yiyenler Sistemi</title>
+    <link rel="icon" type="image/x-icon" href="yemek.jpg">
+    <link rel="apple-touch-icon" href="yemek.jpg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Yemek Yiyenler">
+    <meta name="theme-color" content="#2c3e50">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-yes {
+            background-color: #27ae60;
+        }
+        
+        .btn-yes:hover {
+            background-color: #219653;
+        }
+        
+        .btn-no {
+            background-color: #e74c3c;
+        }
+        
+        .btn-no:hover {
+            background-color: #c0392b;
+        }
+        
+        .timestamp {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .user-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Yemek Yiyenler Sistemi</h1>
+        
+        <div class="form-group">
+            <label for="firstName">İsminizi giriniz:</label>
+            <input type="text" id="firstName" placeholder="İsminiz">
+        </div>
+        
+        <div class="form-group">
+            <label for="lastName">Soyisminizi giriniz:</label>
+            <input type="text" id="lastName" placeholder="Soyisminiz">
+        </div>
+        
+        <div class="user-info" id="userInfo">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
+        
+        <div class="button-group">
+            <button class="btn btn-yes" id="yesBtn">Yemek Yedi</button>
+            <button class="btn btn-no" id="noBtn">Yemek Yemedi</button>
+        </div>
+        
+        <div class="timestamp" id="timestamp">
+            <!-- JavaScript ile doldurulacak -->
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            Veriler başarıyla WhatsApp'a gönderildi!
+        </div>
+    </div>
+
+    <script>
+        // Sayfa yüklendiğinde çalışacak fonksiyon
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const userInfo = document.getElementById('userInfo');
+            const timestampDiv = document.getElementById('timestamp');
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            // İsim veya soyisim değiştiğinde kullanıcı bilgisini göster
+            function updateUserInfo() {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                
+                if (firstName && lastName) {
+                    userInfo.textContent = `${firstName} ${lastName}`;
+                    userInfo.style.display = 'block';
+                } else {
+                    userInfo.style.display = 'none';
+                }
+            }
+            
+            firstNameInput.addEventListener('input', updateUserInfo);
+            lastNameInput.addEventListener('input', updateUserInfo);
+            
+            // Zaman damgasını güncelle
+            function updateTimestamp() {
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('tr-TR');
+                const timeStr = now.toLocaleTimeString('tr-TR');
+                timestampDiv.textContent = `İşlem Tarihi: ${dateStr} - Saat: ${timeStr}`;
+            }
+            
+            // Sayfa yüklendiğinde zaman damgasını güncelle
+            updateTimestamp();
+            
+            // Her saniye zaman damgasını güncelle
+            setInterval(updateTimestamp, 1000);
+            
+            // Verileri WhatsApp'a gönder
+            function sendToWhatsApp(ateFood) {
+                const firstName = firstNameInput.value.trim();
+                const lastName = lastNameInput.value.trim();
+                
+                if (!firstName || !lastName) {
+                    alert('Lütfen isim ve soyisim bilgilerinizi giriniz!');
+                    return;
+                }
+                
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('tr-TR');
+                const timeStr = now.toLocaleTimeString('tr-TR');
+                
+                // WhatsApp mesajını oluştur
+                const message = `Yemek Yiyenler Sistemi\n\nAd Soyad: ${firstName} ${lastName}\nYemek Durumu: ${ateFood ? 'Yemek Yedi' : 'Yemek Yemedi'}\nTarih: ${dateStr}\nSaat: ${timeStr}`;
+                
+                // WhatsApp'a yönlendir
+                const whatsappUrl = `https://wa.me/905367463923?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+                
+                // Başarı mesajını göster
+                successMessage.style.display = 'block';
+                
+                // 3 saniye sonra başarı mesajını gizle
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Yemek yedi butonuna tıklandığında
+            yesBtn.addEventListener('click', function() {
+                sendToWhatsApp(true);
+            });
+            
+            // Yemek yemedi butonuna tıklandığında
+            noBtn.addEventListener('click', function() {
+                sendToWhatsApp(false);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Yemek Yiyenler Sistemi",
+  "short_name": "YemekYiyenler",
+  "description": "Yemek durumunuzu kaydedin ve WhatsApp'a gönderin",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2c3e50",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "yemek.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "yemek.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
